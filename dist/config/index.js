@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-exports.default = {
+var config = {
     PORT: process.env.PORT,
     DEV: process.env.ENVIRONMENT,
+    TYPEORM_PORT: process.env.TYPEORM_PORT
 };
+exports.default = config;

@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Address } from './Address';
+import { Scope } from './Scope';
 
 @Entity()
 export class User {
@@ -6,10 +8,10 @@ export class User {
     id: number;
 
     @Column()
-    firstname: string;
+    firstnames: string;
 
     @Column()
-    lastname: string;
+    lastnames: string;
 
     @Column()
     password: string;
@@ -19,5 +21,9 @@ export class User {
 
     @Column()
     role: number;
+    
+    @OneToMany(() => Address, address => address.user)
+    addresses: Address[]
 
 }
+

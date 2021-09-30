@@ -3,18 +3,16 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import config from './config';
-import { createConnection } from 'typeorm'
 const { PORT } = config;
 import routes from './routes';
 const app = express();
-createConnection();
-
 import {
     errorHandler,
     logErrors,
     wrapErrors
 } from './middlewares/errorHandler';
 import notFoundHandler from './middlewares/notFoundHandler'
+import "./database/mysql";
 
 app.set('port', PORT);
 
