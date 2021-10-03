@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,33 +50,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initConnection = void 0;
-var typeorm_1 = require("typeorm");
-var seedApiKeys_1 = require("../seeders/seedApiKeys");
+var passport_jwt_1 = require("passport-jwt");
+var passport_1 = __importDefault(require("passport"));
 var config_1 = __importDefault(require("../config"));
-function initConnection() {
-    return __awaiter(this, void 0, void 0, function () {
-        var connection, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, typeorm_1.createConnection()];
-                case 1:
-                    connection = _a.sent();
-                    return [4 /*yield*/, seedApiKeys_1.seedApiKeys()];
-                case 2:
-                    _a.sent();
-                    console.log("Database connected on port " + config_1.default.TYPEORM_PORT);
-                    return [2 /*return*/, connection];
-                case 3:
-                    error_1 = _a.sent();
-                    console.log(error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
+var boom_1 = __importDefault(require("@hapi/boom"));
+var typeorm_1 = require("typeorm");
+var User_1 = require("../Entity/User");
+var opts = {
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: config_1.default.SECRET_JWT,
+};
+passport_1.default.use(new passport_jwt_1.Strategy(opts, function (payload, done) { return __awaiter(void 0, void 0, void 0, function () {
+    var userFound, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne({
+                        where: [
+                            { email: payload.email }
+                        ]
+                    })];
+            case 1:
+                userFound = _a.sent();
+                if (!userFound) {
+                    return [2 /*return*/, done(boom_1.default.unauthorized(), false)];
+                }
+                return [2 /*return*/, done(null, __assign(__assign({}, userFound), { scopes: payload.scopes }))];
+            case 2:
+                error_1 = _a.sent();
+                done(boom_1.default.unauthorized());
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
     });
-}
-exports.initConnection = initConnection;
-initConnection();
+}); }));

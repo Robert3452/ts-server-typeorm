@@ -4,6 +4,9 @@ import cors from 'cors';
 import path from 'path';
 import config from './config';
 const { PORT } = config;
+import './middlewares/basicMiddleware';
+import passport from 'passport';
+import './middlewares/jwtMiddleware';
 import routes from './routes';
 const app = express();
 import {
@@ -21,9 +24,8 @@ app.use(morgan("dev"));
 app.use(cors());
 
 app.use('/api', routes);
-
+passport.initialize();
 app.use('/uploads', express.static(path.resolve('uploads')));
-
 
 app.use(logErrors);
 app.use(wrapErrors);

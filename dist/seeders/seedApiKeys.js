@@ -35,9 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-require("./database/mysql");
+exports.seedApiKeys = void 0;
+var dotenv_1 = require("dotenv");
+dotenv_1.config();
+var crypto_js_1 = __importDefault(require("crypto-js"));
 var typeorm_1 = require("typeorm");
+var Scope_1 = require("../Entity/Scope");
+var Permission_1 = require("../Entity/Permission");
 var dropData = function (entity) { return __awaiter(void 0, void 0, void 0, function () {
     var result, error_1;
     return __generator(this, function (_a) {
@@ -60,8 +68,6 @@ var dropData = function (entity) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
-// dropData(Scope);
-// dropData(Permission);
 var adminScopes = [
     'signin:auth',
     'signup:auth',
@@ -77,3 +83,75 @@ var publicScopes = [
     'signup:auth',
     'read:products'
 ];
+function genereateRandomToken() {
+    return crypto_js_1.default.lib.WordArray.random(32).toString();
+}
+var apiKeys = [
+    {
+        val: "admin",
+        token: genereateRandomToken(),
+        scopes: adminScopes
+    }, {
+        val: "public",
+        token: genereateRandomToken(),
+        scopes: publicScopes
+    }
+];
+function seedApiKeys() {
+    return __awaiter(this, void 0, void 0, function () {
+        var promises, error_2;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, dropData(Scope_1.Scope)];
+                case 1:
+                    _a.sent();
+                    promises = apiKeys.map(function (apiKey) { return __awaiter(_this, void 0, void 0, function () {
+                        var permissionRepo, scope, _a, _b;
+                        var _c;
+                        var _this = this;
+                        return __generator(this, function (_d) {
+                            switch (_d.label) {
+                                case 0:
+                                    permissionRepo = apiKey.scopes.map(function (scope) { return __awaiter(_this, void 0, void 0, function () {
+                                        var repo;
+                                        return __generator(this, function (_a) {
+                                            switch (_a.label) {
+                                                case 0:
+                                                    repo = typeorm_1.getRepository(Permission_1.Permission).create({ permission: scope });
+                                                    return [4 /*yield*/, typeorm_1.getRepository(Permission_1.Permission).save(repo)];
+                                                case 1: return [2 /*return*/, _a.sent()];
+                                            }
+                                        });
+                                    }); });
+                                    _b = (_a = typeorm_1.getRepository(Scope_1.Scope)).create;
+                                    _c = {
+                                        token: apiKey.token,
+                                        role: apiKey.val
+                                    };
+                                    return [4 /*yield*/, Promise.all(permissionRepo)];
+                                case 1:
+                                    scope = _b.apply(_a, [(_c.permissions = _d.sent(),
+                                            _c)]);
+                                    return [4 /*yield*/, typeorm_1.getRepository(Scope_1.Scope).save(scope)];
+                                case 2: return [2 /*return*/, _d.sent()];
+                            }
+                        });
+                    }); });
+                    return [4 /*yield*/, Promise.all(promises)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.seedApiKeys = seedApiKeys;
+// seedApiKeys();

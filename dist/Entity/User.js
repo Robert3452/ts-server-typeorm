@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 var typeorm_1 = require("typeorm");
 var Address_1 = require("./Address");
+var Order_1 = require("./Order");
+var Scope_1 = require("./Scope");
+var ShoppingCart_1 = require("./ShoppingCart");
 var User = /** @class */ (function () {
     function User() {
     }
@@ -23,6 +26,12 @@ var User = /** @class */ (function () {
         typeorm_1.Column(),
         __metadata("design:type", String)
     ], User.prototype, "firstnames", void 0);
+    __decorate([
+        typeorm_1.Column({
+            default: false,
+        }),
+        __metadata("design:type", Boolean)
+    ], User.prototype, "isAdmin", void 0);
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
@@ -43,8 +52,22 @@ var User = /** @class */ (function () {
         typeorm_1.OneToMany(function () { return Address_1.Address; }, function (address) { return address.user; }),
         __metadata("design:type", Array)
     ], User.prototype, "addresses", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function () { return Order_1.Order; }, function (order) { return order.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "orders", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function () { return ShoppingCart_1.ShoppingCart; }, function (shoppingCart) { return shoppingCart.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "shoppingCarts", void 0);
+    __decorate([
+        typeorm_1.ManyToMany(function () { return Scope_1.Scope; }),
+        typeorm_1.JoinTable(),
+        __metadata("design:type", Array)
+    ], User.prototype, "scopes", void 0);
     User = __decorate([
-        typeorm_1.Entity()
+        typeorm_1.Entity(),
+        typeorm_1.Unique(["email"])
     ], User);
     return User;
 }());

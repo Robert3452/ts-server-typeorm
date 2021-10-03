@@ -22,9 +22,9 @@ var Permission = /** @class */ (function () {
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Permission.prototype, "permmssion", void 0);
+    ], Permission.prototype, "permission", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function () { return Scope_1.Scope; }, function (scope) { return scope.permissions; }),
+        typeorm_1.ManyToOne(function () { return Scope_1.Scope; }, function (scope) { return scope.permissions; }, { onDelete: "CASCADE", }),
         __metadata("design:type", Scope_1.Scope)
     ], Permission.prototype, "scope", void 0);
     Permission = __decorate([

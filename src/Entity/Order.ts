@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, EntitySchema } from 'typeorm';
 import { OrderDetail } from './OrderDetail';
 import { Product } from './Product';
+import { User } from './User';
 
 @Entity()
 export class Order {
@@ -22,5 +23,8 @@ export class Order {
 
     @OneToMany(() => OrderDetail, orderDetail => orderDetail.order)
     orderDetails: OrderDetail[];
+
+    @ManyToOne(() => User, user => user.orders)
+    user: User
 
 }

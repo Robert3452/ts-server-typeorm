@@ -39,33 +39,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initConnection = void 0;
+var passport_http_1 = require("passport-http");
+var passport_1 = __importDefault(require("passport"));
+var boom_1 = __importDefault(require("@hapi/boom"));
+var User_1 = require("../Entity/User");
 var typeorm_1 = require("typeorm");
-var seedApiKeys_1 = require("../seeders/seedApiKeys");
-var config_1 = __importDefault(require("../config"));
-function initConnection() {
-    return __awaiter(this, void 0, void 0, function () {
-        var connection, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, typeorm_1.createConnection()];
-                case 1:
-                    connection = _a.sent();
-                    return [4 /*yield*/, seedApiKeys_1.seedApiKeys()];
-                case 2:
-                    _a.sent();
-                    console.log("Database connected on port " + config_1.default.TYPEORM_PORT);
-                    return [2 /*return*/, connection];
-                case 3:
-                    error_1 = _a.sent();
-                    console.log(error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
+var bcrypt_1 = __importDefault(require("bcrypt"));
+passport_1.default.use('basic', new passport_http_1.BasicStrategy(function (email, password, done) { return __awaiter(void 0, void 0, void 0, function () {
+    var userFound, signedIn, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne({
+                        where: [
+                            { email: email }
+                        ]
+                    })];
+            case 1:
+                userFound = _a.sent();
+                if (!userFound)
+                    return [2 /*return*/, done(boom_1.default.unauthorized(), false)];
+                return [4 /*yield*/, bcrypt_1.default.compare(password, userFound.password)];
+            case 2:
+                signedIn = _a.sent();
+                if (signedIn)
+                    return [2 /*return*/, done(null, userFound)];
+                return [2 /*return*/, done(boom_1.default.unauthorized(), false)];
+            case 3:
+                error_1 = _a.sent();
+                console.log(error_1);
+                if (typeof error_1 === "string") {
+                    return [2 /*return*/, done(boom_1.default.unauthorized(error_1))];
+                }
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
-}
-exports.initConnection = initConnection;
-initConnection();
+}); }));

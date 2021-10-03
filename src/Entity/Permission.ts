@@ -7,9 +7,9 @@ export class Permission {
     id: number;
 
     @Column()
-    permmssion: string;
+    permission: string;
 
-    @ManyToOne(() => Scope, scope => scope.permissions)
+    @ManyToOne(() => Scope, scope => scope.permissions, { onDelete: "CASCADE", })
     scope: Scope;
 
 }

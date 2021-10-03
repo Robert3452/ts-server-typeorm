@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ShoppingCart = void 0;
 var typeorm_1 = require("typeorm");
 var ShoppingCartDetail_1 = require("./ShoppingCartDetail");
+var User_1 = require("./User");
 var ShoppingCart = /** @class */ (function () {
     function ShoppingCart() {
     }
@@ -35,6 +36,10 @@ var ShoppingCart = /** @class */ (function () {
         typeorm_1.OneToMany(function () { return ShoppingCartDetail_1.ShoppingCartDetail; }, function (shoppingCartDetail) { return shoppingCartDetail.shoppingCart; }),
         __metadata("design:type", Array)
     ], ShoppingCart.prototype, "shoppingCartDetail", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function () { return User_1.User; }, function (user) { return user.shoppingCarts; }),
+        __metadata("design:type", User_1.User)
+    ], ShoppingCart.prototype, "user", void 0);
     ShoppingCart = __decorate([
         typeorm_1.Entity()
     ], ShoppingCart);

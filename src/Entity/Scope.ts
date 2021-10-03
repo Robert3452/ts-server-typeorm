@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { Permission } from './Permission';
 
 
@@ -7,11 +7,14 @@ export class Scope {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    role: string;
 
     @Column()
     token: string;
 
-    @OneToMany(() => Permission, permission => permission.scope)
+    @OneToMany(() => Permission, permission => permission.scope, { cascade: true, })
     permissions: Permission[];
+
 
 }

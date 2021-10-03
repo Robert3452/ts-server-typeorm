@@ -22,9 +22,13 @@ var Scope = /** @class */ (function () {
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
+    ], Scope.prototype, "role", void 0);
+    __decorate([
+        typeorm_1.Column(),
+        __metadata("design:type", String)
     ], Scope.prototype, "token", void 0);
     __decorate([
-        typeorm_1.OneToMany(function () { return Permission_1.Permission; }, function (permission) { return permission.scope; }),
+        typeorm_1.OneToMany(function () { return Permission_1.Permission; }, function (permission) { return permission.scope; }, { cascade: true, }),
         __metadata("design:type", Array)
     ], Scope.prototype, "permissions", void 0);
     Scope = __decorate([
