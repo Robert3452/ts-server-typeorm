@@ -22,9 +22,9 @@ app.set('port', PORT);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+passport.initialize();
 
 app.use('/api', routes);
-passport.initialize();
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 app.use(logErrors);

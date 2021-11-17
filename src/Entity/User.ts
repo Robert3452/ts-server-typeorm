@@ -1,30 +1,30 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable, Unique } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm'
 import { Address } from './Address';
 import { Order } from './Order';
 import { Scope } from './Scope';
 import { ShoppingCart } from './ShoppingCart';
 
 @Entity()
-@Unique(["email"])
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: false })
     firstnames: string;
 
     @Column({
         default: false,
+        type:'bool'
     })
     isAdmin: boolean
 
-    @Column()
+    @Column({ nullable: false })
     lastnames: string;
 
-    @Column()
+    @Column({ nullable: false })
     password: string;
 
-    @Column()
+    @Column({ nullable: false, unique: true })
     email: string;
 
     @Column()

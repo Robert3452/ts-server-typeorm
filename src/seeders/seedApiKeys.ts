@@ -74,5 +74,3 @@ export async function seedApiKeys() {
         console.log(error);
     }
 }
-
-// seedApiKeys();

@@ -5,21 +5,22 @@ import {
 import { ProductVariation } from './ProductVariation';
 import { OrderDetail } from './OrderDetail';
 import { ShoppingCartDetail } from './ShoppingCartDetail';
+import { Image } from './Image';
 @Entity()
 export class Product {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: false })
     name: string;
 
     @Column()
     description: string;
 
-    @Column()
-    price: string;
+    @Column({ nullable: false })
+    price: number;
 
-    @Column()
+    @Column({ nullable: false })
     sku: string;
 
     @OneToMany(() => ProductVariation, productVariation => productVariation.product)
@@ -31,4 +32,6 @@ export class Product {
     @OneToOne(() => ShoppingCartDetail, shoppingCartDetail => shoppingCartDetail.product)
     shoppingCartDetail: ShoppingCartDetail;
 
+    @OneToMany(() => Image, image => image.product)
+    images: Image[]
 }

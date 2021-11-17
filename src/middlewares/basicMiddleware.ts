@@ -11,7 +11,8 @@ passport.use('basic', new BasicStrategy(async (email, password, done) => {
         const userFound = await getRepository(User).findOne({
             where: [
                 { email }
-            ]
+            ],
+            // select: ["firstnames", "lastnames", "isAdmin", "email", "id",]
         })
         if (!userFound) return done(boom.unauthorized(), false);
         const signedIn: boolean = await bcrypt.compare(password, userFound.password);

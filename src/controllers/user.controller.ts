@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { getRepository } from 'typeorm';
+import {  getRepository } from 'typeorm';
 import { User } from '../Entity/User';
 import boom from '@hapi/boom';
 import passport from 'passport';
@@ -28,10 +28,10 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         }
 
         const newUser = getRepository(User).create({ firstnames, lastnames, email: email.toLowerCase(), password: pwd });
-        const results = await getRepository(User).save(newUser);
+        const createdUser = { ...await getRepository(User).save(newUser) };
 
         return res.json({
-            user: newUser
+            user: { id: createdUser.id, email: createdUser.email, lastnames: createdUser.lastnames, firstnames: createdUser.firstnames, }
         })
     } catch (error) {
         next(error);
@@ -51,11 +51,11 @@ export const signin = async (req: Request, res: Response, next: NextFunction) =>
             const scope = await getRepository(Scope).findOne(
                 { role: user.isAdmin ? "admin" : "public" });
 
-            console.log(scope)
             if (typeof scope?.token === "undefined")
                 return next(boom.unauthorized("public Token not granted"));
 
-            console.log(user);
+            delete user.password;
+
             const payload = {
                 ...user,
                 scopes: scope.permissions
@@ -69,16 +69,6 @@ export const signin = async (req: Request, res: Response, next: NextFunction) =>
     })(req, res, next)
 }
 
-// export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const userToken: any = req.user;
-//         let users = await userCrud.getAll();
-//         users = users.filter((el: any) => el._id.toString() !== userToken._id.toString())
-//         return res.json({ statusCode: 200, message: users });
-//     } catch (error) {
-//         next(error);
-//     }
-// }
 
 export const getUser = async (
     req: Request,
