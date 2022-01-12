@@ -1,30 +1,35 @@
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { Order } from './Order';
-import { Product } from './Product';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+} from "typeorm";
+import { Order } from "./Order";
+import { Product } from "./Product";
 
-@Entity()
+@Entity({ name: "order_details" })
 export class OrderDetail {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    productName: string;
+  @Column()
+  productName: string;
 
-    @Column()
-    price: number;
+  @Column()
+  price: number;
 
-    @Column()
-    unitPrice: number;
+  @Column()
+  unitPrice: number;
 
-    @Column()
-    quantity: number;
+  @Column()
+  quantity: number;
 
-    @ManyToOne(() => Order, order => order.orderDetails)
-    order: Order
+  @ManyToOne(() => Order, (order) => order.orderDetails)
+  order: Order;
 
-    @OneToOne(() => Product, product => product.orderDetail)
-    @JoinColumn()
-    product: Product
-
-
+  @OneToOne(() => Product, (product) => product.orderDetail)
+  @JoinColumn()
+  product: Product;
 }

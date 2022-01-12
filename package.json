@@ -9,9 +9,11 @@
     "seed-api": "tsc && node ./dist/seeders/seedApiKeys.js",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migrations:generate": "npm run typeorm -- migration:generate -n",
+    "m:create": "npm run typeorm -- migration:create -n",
     "migrations:run": "npm run typeorm -- migration:run",
     "migrations:show": "npm run typeorm -- migration:show",
-    "migrations:drop": "npm run typeorm -- drop"
+    "migrations:revert": "npm run typeorm -- migration:revert",
+    "migrations:drop": "npm run typeorm -- schema:drop"
   },
   "keywords": [],
   "author": "",
@@ -27,10 +29,11 @@
     "@types/passport": "^1.0.7",
     "@types/passport-http": "^0.3.9",
     "@types/passport-jwt": "^3.0.6",
+    "@types/pg": "^8.6.4",
     "@types/sequelize": "^4.28.10",
-    "tsconfig-paths": "^3.11.0",
     "axios": "^0.22.0",
     "tsc-watch": "^4.5.0",
+    "tsconfig-paths": "^3.11.0",
     "typescript": "^4.3.5"
   },
   "dependencies": {
@@ -52,6 +55,7 @@
     "passport": "^0.4.1",
     "passport-http": "^0.3.0",
     "passport-jwt": "^4.0.0",
+    "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.5",
     "ts-node": "^10.4.0",

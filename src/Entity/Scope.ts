@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { Permission } from './Permission';
 
 
-@Entity()
+@Entity({name:"scopes"})
 export class Scope {
     @PrimaryGeneratedColumn()
     id: number;

@@ -1,31 +1,38 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne,JoinColumn } from 'typeorm';
-import { ShoppingCart } from './ShoppingCart';
-import { Product } from './Product';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { ShoppingCart } from "./ShoppingCart";
+import { Product } from "./Product";
 
-@Entity()
+@Entity({ name: "shoppingcart_details" })
 export class ShoppingCartDetail {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    productName: string;
+  @Column()
+  productName: string;
 
-    @Column()
-    price: number;
+  @Column()
+  price: number;
 
-    @Column()
-    unitPrice: number;
+  @Column()
+  unitPrice: number;
 
-    @Column()
-    quantity: number;
+  @Column()
+  quantity: number;
 
-    @ManyToOne(() => ShoppingCart, shoppingCart => shoppingCart.shoppingCartDetail)
-    shoppingCart: ShoppingCart
+  @ManyToOne(
+    () => ShoppingCart,
+    (shoppingCart) => shoppingCart.shoppingCartDetail
+  )
+  shoppingCart: ShoppingCart;
 
-    @OneToOne(() => Product, product => product.shoppingCartDetail)
-    @JoinColumn()
-    product: Product
-
-    
-
+  @OneToOne(() => Product, (product) => product.shoppingCartDetail)
+  @JoinColumn()
+  product: Product;
 }

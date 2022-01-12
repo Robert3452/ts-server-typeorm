@@ -1,15 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'
-import { Scope } from './Scope';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Scope } from "./Scope";
 
-@Entity()
+@Entity({ name: "permissions" })
 export class Permission {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    permission: string;
+  @Column()
+  permission: string;
 
-    @ManyToOne(() => Scope, scope => scope.permissions, { onDelete: "CASCADE", })
-    scope: Scope;
-
+  @ManyToOne(() => Scope, (scope) => scope.permissions, { onDelete: "CASCADE" })
+  scope: Scope;
 }

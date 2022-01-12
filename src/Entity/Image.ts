@@ -2,23 +2,20 @@ import { col } from "sequelize";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./Product";
 
-
-@Entity()
+@Entity({ name: "images" })
 export class Image {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({})
-    alt: string;
+  @Column({})
+  alt: string;
 
-    @Column({ nullable: false })
-    url: string;
+  @Column({ nullable: false })
+  url: string;
 
-    @Column()
-    imageId: string;
+  @Column()
+  imageId: string;
 
-    @ManyToOne(() => Product, product => product.images)
-    product: Product;
-
-
+  @ManyToOne(() => Product, (product) => product.images)
+  product: Product;
 }

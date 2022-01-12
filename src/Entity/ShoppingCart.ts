@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'ty
 import { ShoppingCartDetail } from './ShoppingCartDetail';
 import { User } from './User';
 
-@Entity()
+@Entity({name:"shoppingcarts"})
 export class ShoppingCart {
     @PrimaryGeneratedColumn()
     id: number;
